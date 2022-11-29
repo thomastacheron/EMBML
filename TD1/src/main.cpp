@@ -26,16 +26,16 @@ void be2le(U32& be, U32& le){ // big-endian to little-endian
 }
 
 void convert(Bin& bin){
-   bin.magicNumber = ntohl(&bin.magicNumber);
-   bin.dataOffset = ntohl(&bin.dataOffset);
-   bin.dataSize = ntohl(&bin.dataSize);
-   bin.encoding = ntohl(&bin.encoding);
-   bin.sampleRate = ntohl(&bin.sampleRate);
-   bin.channels = ntohl(&bin.channels);
+   bin.magicNumber = ntohl(bin.magicNumber);
+   bin.dataOffset = ntohl(bin.dataOffset);
+   bin.dataSize = ntohl(bin.dataSize);
+   bin.encoding = ntohl(bin.encoding);
+   bin.sampleRate = ntohl(bin.sampleRate);
+   bin.channels = ntohl(bin.channels);
 }
 
 std::ostream& operator<<(std::ostream& os, const Bin& bin){
-    os << "magicNumber : " << bin.magicNumber << "\n";
+    os << "magicNumber : " << std::hex << bin.magicNumber << std::dec << "\n";
     os << "dataOffset : " << bin.dataOffset << "\n";
     os << "dataSize : " << bin.dataSize << "\n";
     os << "encoding : " << bin.encoding << "\n";
@@ -45,5 +45,23 @@ std::ostream& operator<<(std::ostream& os, const Bin& bin){
 }
 
 int main(){
+  std::string file_path = "../archive/genres/blues/blues.00000.au";
+  std::ifstream datafile;
+  datafile.open(file_path.c_str(), std::ios::binary | std::ios::in);
+  if(!datafile.is_open())
+    throw "Unable to load data file";
 
+  Bin bin;
+  while (!datafile.eof()){
+    datafile.read((char*)&bin, sizeof(bin));
+    convert(bin);
+    if (datafile.eof()){
+      std::cout << "EOF" << '\n';
+      break;
+    }
+    assert(bin.magicNumber == 0x2e736e64);
+    std::cout << bin << '\n';
+    datafile.seekg(bin.dataSize * sizeof(U32));
+  }
+  datafile.close();
 }
