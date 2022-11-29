@@ -61,8 +61,12 @@ int main(){
       std::cout << "EOF" << '\n';
       break;
     }
-    data = ntohl(data);
+    data = ntohs(data);
     // std::cout << data << '\n';
   }
   datafile.close();
 }
+
+/* NOTES */
+// ntohs : 16 bites
+// ntohl : 32 bites
