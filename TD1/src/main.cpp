@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+typedef uint16_t U16;
 typedef uint32_t U32;
 
 #pragma pack(push, 1)
@@ -48,16 +49,20 @@ int main(){
     throw "Unable to load data file";
 
   Header hdr;
+  U16 data;
+  datafile.read((char*)&hdr, sizeof(hdr));
+  convert(hdr);
+  assert(hdr.magicNumber == 0x2e736e64);
+  std::cout << hdr << '\n';
+  datafile.seekg(hdr.dataOffset * sizeof(U32));
   while (!datafile.eof()){
-    datafile.read((char*)&hdr, sizeof(hdr));
-    convert(hdr);
+    datafile.read((char*)&data, sizeof(data));
     if (datafile.eof()){
       std::cout << "EOF" << '\n';
       break;
     }
-    assert(hdr.magicNumber == 0x2e736e64);
-    std::cout << hdr << '\n';
-    datafile.seekg(hdr.dataSize * sizeof(U32));
+    data = ntohl(data);
+    // std::cout << data << '\n';
   }
   datafile.close();
 }
