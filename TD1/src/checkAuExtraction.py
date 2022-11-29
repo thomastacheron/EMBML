@@ -6,10 +6,10 @@ Created on Mon Nov 29 22:26:59 2021
 """
 import numpy as np
 import pandas as pd
-import sounddevice
+# import sounddevice
 
-file_au='/home/morgerlo/Documents/Cours/embeddedML/IA_embarquee/Necessaire/readAu/blues.00000.au'
-file_c='/home/morgerlo/Documents/Cours/embeddedML/IA_embarquee/Necessaire/readAu/output.csv'
+file_au='/home/thomastacheron/Documents/ROB/3A/EMBML/TD1/archive/genres/blues/blues.00000.au'
+file_c='/home/thomastacheron/Documents/ROB/3A/EMBML/TD1/build/output.csv'
 Fe=22050
 
 def readAuFile(file):
@@ -23,9 +23,9 @@ def readAuFile(file):
         au.seek(0)
         au.read(dataoffset)
         data = au.read(datasize)
-            
+
     d = []
-    for i in range(0, datasize, 2): 
+    for i in range(0, datasize, 2):
         d.append(int.from_bytes(data[i:i + 2], byteorder='big', signed=True))
     d=np.asarray(d, dtype=np.int16)
     return d
@@ -38,4 +38,4 @@ d2=d2.reshape((d2.shape[1],))
 if np.array_equal(d1[:len(d2)], d2):
     print('Extraction is Okay !')
 else:
-   print('There is error during extraction')     
+   print('There is error during extraction')
