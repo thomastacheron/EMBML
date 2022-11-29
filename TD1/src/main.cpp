@@ -2,6 +2,8 @@
 #include <fstream>
 #include <cassert>
 #include <netinet/in.h>
+#include <vector>
+#include <numeric>
 #include "constants.h"
 #include "fft_utils.h"
 
@@ -38,6 +40,29 @@ std::ostream& operator<<(std::ostream& os, const Header& hdr){
     return os;
 }
 
+Complex average(std::vector<Complex> const& v){
+  if(v.empty()){
+      return 0;
+  }
+
+  auto const count = static_cast<float>(v.size());
+  return std::reduce(v.begin(), v.end()) / count;
+}
+
+Complex stdev(std::vector<Complex> const& v, Complex const& mean){
+  if(v.empty()){
+      return 0;
+  }
+  Complex s = 0.;
+  float_t const count = static_cast<float>(v.size());
+  for (size_t i = 0; i < count; i++){
+    s += pow(v[i] - mean, 2);
+  }
+  s /= count;
+  s = sqrt(s);
+  return s;
+}
+
 int main(){
   std::string file_path = "../archive/genres/blues/blues.00000.au";
   std::ifstream datafile;
@@ -47,6 +72,7 @@ int main(){
 
   Header hdr;
   U16 data;
+  std::vector<Complex> v;
   datafile.read((char*)&hdr, sizeof(hdr));
   convert(hdr);
   assert(hdr.magicNumber == 0x2e736e64);
@@ -59,7 +85,15 @@ int main(){
       break;
     }
     data = ntohs(data);
-    // std::cout << data;
+    Complex cp = data;
+    v.push_back(cp);
+    if (v.size() == 512){
+      ite_dit_fft(v);
+      float_t mean = average(v).real();
+      float_t std = stdev(v, mean).real();
+      std::cout << mean << " " << std << '\n';
+      v = {};
+    }
   }
   datafile.close();
 }
