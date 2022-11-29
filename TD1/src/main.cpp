@@ -18,20 +18,21 @@ struct Bin{
   U32 encoding;
   U32 sampleRate;
   U32 channels;
-}; 
+};
 #pragma pack(pop)
 
 void be2le(U32& be, U32& le){ // big-endian to little-endian
   le = ntohl(be);
 }
 
-void
-convert(&magicNumber);
-convert(&dataOffset);
-convert(&dataSize);
-convert(&encoding);
-convert(&sampleRate);
-convert(&channels);
+void convert(Bin& bin){
+   bin.magicNumber = ntohl(&bin.magicNumber);
+   bin.dataOffset = ntohl(&bin.dataOffset);
+   bin.dataSize = ntohl(&bin.dataSize);
+   bin.encoding = ntohl(&bin.encoding);
+   bin.sampleRate = ntohl(&bin.sampleRate);
+   bin.channels = ntohl(&bin.channels);
+}
 
 std::ostream& operator<<(std::ostream& os, const Bin& bin){
     os << "magicNumber : " << bin.magicNumber << "\n";
