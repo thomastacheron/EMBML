@@ -61,8 +61,8 @@ int main(){
       std::cout << "EOF" << '\n';
       break;
     }
-    data = ntohl(data);
-    // std::cout << data << '\n';
+    data = ntohs(data);
+    std::cout << data;
   }
   datafile.close();
 }
