@@ -43,7 +43,7 @@ std::ostream& operator<<(std::ostream& os, const Header& hdr){
 int main(){
   std::string file_path = "../archive/genres/blues/blues.00000.au";
   std::ifstream datafile;
-  datafile.open(file_path.c_str(), std::ios::hdrary | std::ios::in);
+  datafile.open(file_path.c_str(), std::ios::binary | std::ios::in);
   if(!datafile.is_open())
     throw "Unable to load data file";
 
