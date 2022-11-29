@@ -11,7 +11,7 @@
 typedef uint32_t U32;
 
 #pragma pack(push, 1)
-struct Bin{
+struct Header{
   U32 magicNumber;
   U32 dataOffset;
   U32 dataSize;
@@ -21,47 +21,43 @@ struct Bin{
 };
 #pragma pack(pop)
 
-void be2le(U32& be, U32& le){ // big-endian to little-endian
-  le = ntohl(be);
+void convert(Header& hdr){
+   hdr.magicNumber = ntohl(hdr.magicNumber);
+   hdr.dataOffset = ntohl(hdr.dataOffset);
+   hdr.dataSize = ntohl(hdr.dataSize);
+   hdr.encoding = ntohl(hdr.encoding);
+   hdr.sampleRate = ntohl(hdr.sampleRate);
+   hdr.channels = ntohl(hdr.channels);
 }
 
-void convert(Bin& bin){
-   bin.magicNumber = ntohl(bin.magicNumber);
-   bin.dataOffset = ntohl(bin.dataOffset);
-   bin.dataSize = ntohl(bin.dataSize);
-   bin.encoding = ntohl(bin.encoding);
-   bin.sampleRate = ntohl(bin.sampleRate);
-   bin.channels = ntohl(bin.channels);
-}
-
-std::ostream& operator<<(std::ostream& os, const Bin& bin){
-    os << "magicNumber : " << std::hex << bin.magicNumber << std::dec << "\n";
-    os << "dataOffset : " << bin.dataOffset << "\n";
-    os << "dataSize : " << bin.dataSize << "\n";
-    os << "encoding : " << bin.encoding << "\n";
-    os << "sampleRate : " << bin.sampleRate << "\n";
-    os << "channels : " << bin.channels << "\n";
+std::ostream& operator<<(std::ostream& os, const Header& hdr){
+    os << "magicNumber : " << std::hex << hdr.magicNumber << std::dec << "\n";
+    os << "dataOffset : " << hdr.dataOffset << "\n";
+    os << "dataSize : " << hdr.dataSize << "\n";
+    os << "encoding : " << hdr.encoding << "\n";
+    os << "sampleRate : " << hdr.sampleRate << "\n";
+    os << "channels : " << hdr.channels << "\n";
     return os;
 }
 
 int main(){
   std::string file_path = "../archive/genres/blues/blues.00000.au";
   std::ifstream datafile;
-  datafile.open(file_path.c_str(), std::ios::binary | std::ios::in);
+  datafile.open(file_path.c_str(), std::ios::hdrary | std::ios::in);
   if(!datafile.is_open())
     throw "Unable to load data file";
 
-  Bin bin;
+  Header hdr;
   while (!datafile.eof()){
-    datafile.read((char*)&bin, sizeof(bin));
-    convert(bin);
+    datafile.read((char*)&hdr, sizeof(hdr));
+    convert(hdr);
     if (datafile.eof()){
       std::cout << "EOF" << '\n';
       break;
     }
-    assert(bin.magicNumber == 0x2e736e64);
-    std::cout << bin << '\n';
-    datafile.seekg(bin.dataSize * sizeof(U32));
+    assert(hdr.magicNumber == 0x2e736e64);
+    std::cout << hdr << '\n';
+    datafile.seekg(hdr.dataSize * sizeof(U32));
   }
   datafile.close();
 }
