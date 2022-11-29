@@ -7,7 +7,7 @@
 #include "constants.h"
 #include "fft_utils.h"
 
-typedef uint16_t U16;
+typedef int16_t I16;
 typedef uint32_t U32;
 
 #pragma pack(push, 1)
@@ -71,7 +71,7 @@ int main(){
     throw "Unable to load data file";
 
   Header hdr;
-  U16 data;
+  I16 data;
   std::vector<Complex> v;
   datafile.read((char*)&hdr, sizeof(hdr));
   convert(hdr);
@@ -85,15 +85,21 @@ int main(){
       break;
     }
     data = ntohs(data);
+    // std::cout << data << '\n';
     Complex cp = data;
     v.push_back(cp);
     if (v.size() == 512){
       ite_dit_fft(v);
-      float_t mean = average(v).real();
-      float_t std = stdev(v, mean).real();
-      std::cout << mean << " " << std << '\n';
+      // float_t mean = average(v).real();
+      // float_t std = stdev(v, mean).real();
+      // std::cout << mean << " " << std << '\n';
+
+      // TODO mean, stdev of columns
+
       v = {};
     }
   }
   datafile.close();
+
+  // TODO write mean, stdev in a .csv
 }
