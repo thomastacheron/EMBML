@@ -1,12 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
-#include <cmath>
 #include <netinet/in.h>
-#include <cstring>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include "constants.h"
+#include "fft_utils.h"
 
 typedef uint16_t U16;
 typedef uint32_t U32;
@@ -62,7 +59,7 @@ int main(){
       break;
     }
     data = ntohs(data);
-    std::cout << data;
+    // std::cout << data;
   }
   datafile.close();
 }
