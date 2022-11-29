@@ -18,13 +18,14 @@ struct Bin{
   U32 encoding;
   U32 sampleRate;
   U32 channels;
-};
+}; 
 #pragma pack(pop)
 
 void be2le(U32& be, U32& le){ // big-endian to little-endian
   le = ntohl(be);
 }
 
+void
 convert(&magicNumber);
 convert(&dataOffset);
 convert(&dataSize);
