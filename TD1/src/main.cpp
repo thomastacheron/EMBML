@@ -4,11 +4,13 @@
 #include <netinet/in.h>
 #include <vector>
 #include <numeric>
+#include <complex>
 #include "constants.h"
 #include "fft_utils.h"
 
 typedef int16_t I16;
 typedef uint32_t U32;
+typedef std::vector<float_t> DataVector;
 
 #pragma pack(push, 1)
 struct Header_au{
@@ -19,7 +21,7 @@ struct Header_au{
   U32 sampleRate;
   U32 channels;
 
-  void be2le(){
+  void be2he(){
     magicNumber = ntohl(magicNumber);
     assert(magicNumber == 0x2e736e64);
     dataOffset = ntohl(dataOffset);
@@ -31,55 +33,56 @@ struct Header_au{
 };
 #pragma pack(pop)
 
+struct Au{
+  Header_au hdr;
+  DataVector dataVector;
+};
+
 std::ostream& operator<<(std::ostream& os, const Header_au& hdr){
+  os << "======= .au file =======" << "\n";
   os << "magicNumber : " << std::hex << hdr.magicNumber << std::dec << "\n";
   os << "dataOffset : " << hdr.dataOffset << "\n";
   os << "dataSize : " << hdr.dataSize << "\n";
   os << "encoding : " << hdr.encoding << "\n";
   os << "sampleRate : " << hdr.sampleRate << "\n";
   os << "channels : " << hdr.channels << "\n";
+  os << "========================" << "\n";
   return os;
 }
 
-void load_au(std::ifstream& datafile, Header_au& hdr){
-  datafile.read((char*)&hdr, sizeof(hdr));
-  hdr.be2le();
-  std::cout << hdr << '\n';
+std::ostream& operator<<(std::ostream& os, const DataVector& dataVector){
+  bool first = true;
+  for (auto& it: dataVector){
+    if (!first){
+      os << ",";
+    }
+    first = false;
+    os << it;
+  }
+  os << "\n";
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Au& au){
+  os << au.hdr << au.dataVector;
+  return os;
+}
+
+void load_au(std::ifstream& datafile, Au& au){
+  datafile.read(reinterpret_cast<char*>(&au.hdr), sizeof(au.hdr));
+  au.hdr.be2he();
+  assert(au.hdr.magicNumber == 0x2e736e64);
   I16 data;
-  datafile.seekg(hdr.dataOffset);
+  datafile.seekg(au.hdr.dataOffset);
   while (!datafile.eof()){
-    datafile.read((char*)&data, sizeof(data));
+    datafile.read(reinterpret_cast<char*>(&data), sizeof(data));
     if (datafile.eof()){
       break;
     }
     data = ntohs(data);
-    // std::cout << data << ',';
+    au.dataVector.push_back(data);
   }
 }
-
-
-// Complex average(std::vector<Complex> const& v){
-//   if(v.empty()){
-//       return 0;
-//   }
-//
-//   auto const count = static_cast<float>(v.size());
-//   return std::reduce(v.begin(), v.end()) / count;
-// }
-//
-// Complex stdev(std::vector<Complex> const& v, Complex const& mean){
-//   if(v.empty()){
-//       return 0;
-//   }
-//   Complex s = 0.;
-//   float_t const count = static_cast<float>(v.size());
-//   for (size_t i = 0; i < count; i++){
-//     s += pow(v[i] - mean, 2);
-//   }
-//   s /= count;
-//   s = sqrt(s);
-//   return s;
-// }
 
 int main(){
   std::string file_path = "../archive/genres/blues/blues.00000.au";
@@ -87,23 +90,8 @@ int main(){
   datafile.open(file_path.c_str(), std::ios::binary | std::ios::in);
   if(!datafile.is_open())
     throw "Unable to load data file";
-
-  Header_au hdr;
-  // std::vector<Complex> v;
-  load_au(datafile, hdr);
-  //   Complex cp = data;
-  //   v.push_back(cp);
-  //   if (v.size() == 512){
-  //     ite_dit_fft(v);
-  //     // float_t mean = average(v).real();
-  //     // float_t std = stdev(v, mean).real();
-  //     // std::cout << mean << " " << std << '\n';
-  //
-  //     // TODO mean, stdev of columns
-  //
-  //     v = {};
-  //   }
+  Au au;
+  load_au(datafile, au);
+  std::cout << au.hdr << '\n';
   datafile.close();
-
-  // TODO write mean, stdev in a .csv
 }
