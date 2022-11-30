@@ -11,34 +11,52 @@ typedef int16_t I16;
 typedef uint32_t U32;
 
 #pragma pack(push, 1)
-struct Header{
+struct Header_au{
   U32 magicNumber;
   U32 dataOffset;
   U32 dataSize;
   U32 encoding;
   U32 sampleRate;
   U32 channels;
+
+  void be2le(){
+    magicNumber = ntohl(magicNumber);
+    assert(magicNumber == 0x2e736e64);
+    dataOffset = ntohl(dataOffset);
+    dataSize = ntohl(dataSize);
+    encoding = ntohl(encoding);
+    sampleRate = ntohl(sampleRate);
+    channels = ntohl(channels);
+  }
 };
 #pragma pack(pop)
 
-void convert(Header& hdr){
-   hdr.magicNumber = ntohl(hdr.magicNumber);
-   hdr.dataOffset = ntohl(hdr.dataOffset);
-   hdr.dataSize = ntohl(hdr.dataSize);
-   hdr.encoding = ntohl(hdr.encoding);
-   hdr.sampleRate = ntohl(hdr.sampleRate);
-   hdr.channels = ntohl(hdr.channels);
+std::ostream& operator<<(std::ostream& os, const Header_au& hdr){
+  os << "magicNumber : " << std::hex << hdr.magicNumber << std::dec << "\n";
+  os << "dataOffset : " << hdr.dataOffset << "\n";
+  os << "dataSize : " << hdr.dataSize << "\n";
+  os << "encoding : " << hdr.encoding << "\n";
+  os << "sampleRate : " << hdr.sampleRate << "\n";
+  os << "channels : " << hdr.channels << "\n";
+  return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Header& hdr){
-    os << "magicNumber : " << std::hex << hdr.magicNumber << std::dec << "\n";
-    os << "dataOffset : " << hdr.dataOffset << "\n";
-    os << "dataSize : " << hdr.dataSize << "\n";
-    os << "encoding : " << hdr.encoding << "\n";
-    os << "sampleRate : " << hdr.sampleRate << "\n";
-    os << "channels : " << hdr.channels << "\n";
-    return os;
+void load_au(std::ifstream& datafile, Header_au& hdr){
+  datafile.read((char*)&hdr, sizeof(hdr));
+  hdr.be2le();
+  std::cout << hdr << '\n';
+  I16 data;
+  datafile.seekg(hdr.dataOffset);
+  while (!datafile.eof()){
+    datafile.read((char*)&data, sizeof(data));
+    if (datafile.eof()){
+      break;
+    }
+    data = ntohs(data);
+    // std::cout << data << ',';
+  }
 }
+
 
 // Complex average(std::vector<Complex> const& v){
 //   if(v.empty()){
@@ -70,22 +88,9 @@ int main(){
   if(!datafile.is_open())
     throw "Unable to load data file";
 
-  Header hdr;
-  I16 data;
-  std::vector<Complex> v;
-  datafile.read((char*)&hdr, sizeof(hdr));
-  convert(hdr);
-  assert(hdr.magicNumber == 0x2e736e64);
-  // std::cout << hdr << '\n';
-  datafile.seekg(hdr.dataOffset);
-  while (!datafile.eof()){
-    datafile.read((char*)&data, sizeof(data));
-    if (datafile.eof()){
-      // std::cout << "EOF" << '\n';
-      break;
-    }
-    data = ntohs(data);
-  // std::cout << data << ',';
+  Header_au hdr;
+  // std::vector<Complex> v;
+  load_au(datafile, hdr);
   //   Complex cp = data;
   //   v.push_back(cp);
   //   if (v.size() == 512){
@@ -98,7 +103,6 @@ int main(){
   //
   //     v = {};
   //   }
-  }
   datafile.close();
 
   // TODO write mean, stdev in a .csv
