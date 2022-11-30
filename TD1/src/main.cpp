@@ -92,6 +92,6 @@ int main(){
     throw "Unable to load data file";
   Au au;
   load_au(datafile, au);
-  std::cout << au.hdr << '\n';
+  std::cout << au.hdr;
   datafile.close();
 }
