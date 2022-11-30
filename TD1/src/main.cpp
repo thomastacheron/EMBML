@@ -52,12 +52,12 @@ std::ostream& operator<<(std::ostream& os, const Header_au& hdr){
 
 std::ostream& operator<<(std::ostream& os, const DataVector& dataVector){
   bool first = true;
-  for (auto& it: dataVector){
+  for (auto& elem: dataVector){
     if (!first){
       os << ",";
     }
     first = false;
-    os << it;
+    os << elem;
   }
   os << "\n";
   return os;
