@@ -1,10 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <cstring>
 #include <netinet/in.h>
 #include <vector>
 #include <numeric>
 #include <complex>
+#include <filesystem>
+#include <sstream>
 #include "constants.h"
 #include "fft_utils.h"
 
@@ -59,7 +62,6 @@ std::ostream& operator<<(std::ostream& os, const DataVector& dataVector){
     first = false;
     os << elem;
   }
-  os << "\n";
   return os;
 }
 
@@ -84,14 +86,47 @@ void load_au(std::ifstream& datafile, Au& au){
   }
 }
 
-int main(){
-  std::string file_path = "../archive/genres/blues/blues.00000.au";
+void feature_extraction(const std::string& file_path){
   std::ifstream datafile;
   datafile.open(file_path.c_str(), std::ios::binary | std::ios::in);
   if(!datafile.is_open())
     throw "Unable to load data file";
   Au au;
   load_au(datafile, au);
-  std::cout << au.hdr;
+  // std::cout << au.hdr;
+
+  auto avg = DataVector(N);
+  auto stddev = DataVector(N);
+  auto sample = std::vector<Complex>(N, 0);
+  for (int i = 0; i < K; i++){
+    int c = 0;
+    while (c < N && c + N * i < au.hdr.dataSize / sizeof(I16)){
+      sample[c] = au.dataVector[c + N * i];
+      c++;
+    }
+    ite_dit_fft(sample);
+    for (int j = 0; j < N; j++){
+      sample[j] = (pow(sample[j].real(), 2) + pow(sample[j].imag(), 2)) / N;
+      avg[j] = i / (i + 1) * avg[j] + (sample[j].real() / (i + 1));
+      stddev[j] += (pow((i + 2) * sample[j].real() - avg[j] * (i + 1), 2) / (i + 2) / (i + 1));
+    }
+    sample = std::vector<Complex>(N, 0);
+  }
   datafile.close();
+  std::ofstream outfile;
+  outfile.open("../features.csv", std::ios::out | std::ios::app);
+  outfile << avg << "," << stddev << "," << file_path << "\n";
+  outfile.close();
+}
+
+int main(){
+  std::string dir_path = "../archive/genres";
+  for (auto& genres : std::filesystem::directory_iterator(dir_path)){
+    std::string subdir_path = genres.path().string();
+    for (auto& entry : std::filesystem::directory_iterator(subdir_path)){
+      std::string file_path = entry.path().string();
+      std::cout << file_path << '\n';
+      feature_extraction(file_path);
+    }
+  }
 }
