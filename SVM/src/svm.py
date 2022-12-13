@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import pandas as pd
 import numpy as np
 
@@ -6,7 +7,9 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split, GridSearchCV
 
-data_path = '/home/thomastacheron/Documents/ROB/3A/EMBML/Features/features.csv'
+import os
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+data_path = THIS_FOLDER + '/../../Features/features.csv'
 data = pd.read_csv(data_path, header=None)
 X = data.loc[:, :1023]
 y = data[1024]
