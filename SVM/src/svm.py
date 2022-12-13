@@ -26,17 +26,7 @@ print(f"Test set contains {X_test.shape[0]} examples")
 clf = make_pipeline(StandardScaler(), LinearSVC(random_state=0))
 clf.fit(X_train, y_train)
 
-# scoretrain = clf.score(X_train, y_train)
-# tuned_parameters = [
-#     {"linearsvc__tol": [1e-4, 5e-4, 1e-3, 5e-3, 1e-2, 1e-1, 5e-1], "linearsvc__C": [1e3, 5e3, 1e4, 5e4, 1e6]},
-# ]
-# grid_search_s = GridSearchCV(
-#     clf, tuned_parameters, scoring="accuracy", cv=5
-# )
-# grid_search_s.fit(X_train, y_train)
-# print(grid_search_s.best_params_)
-
-# y_pred = clf.predict(X_test)
 score = clf.score(X_test, y_test)
 print(score)
-# print(scoretrain)
+
+# TODO : Exportez le modèle et l'utiliser en C++ 
