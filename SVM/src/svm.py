@@ -37,12 +37,28 @@ svc = clf.named_steps['linearsvc']
 coef = svc.coef_
 intercept = svc.intercept_
 
+print("mean: ", mean)
+print("scale: ", scale)
+print("coef: ", coef)
+print("intercept: ", intercept)
+
+
+
 score = clf.score(X_test, y_test)
 print("score: ",score)
-print("- saving npy parameters -")
+
 
 # Save the parameters to a file
-np.save('scale.npy', scale)
-np.save('mean.npy', mean)
-np.save('coef.npy', coef)
-np.save('intercept.npy', intercept)
+print("- saving npy parameters -")
+# np.save('scale.npy', scale)
+# np.save('mean.npy', mean)
+# np.save('coef.npy', coef)
+# np.save('intercept.npy', intercept)
+np.savetxt('scale.txt', scale)
+np.savetxt('mean.txt', mean)
+np.savetxt('coef.txt', coef)
+np.savetxt('intercept.txt', intercept)
+
+# scale_load = np.load('scale.npy')
+# for i in range(scale_load.shape[0]):
+#     print(scale_load[i])

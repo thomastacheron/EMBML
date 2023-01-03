@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(au_parser LANGUAGES CXX)
+project(svm LANGUAGES CXX)
 set(CMAKE_BUILD_TYPE debug)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++2a")
 

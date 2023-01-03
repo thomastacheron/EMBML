@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named au_parser
+# Target rules for targets named svm
 
 # Build rule for target.
-au_parser: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 au_parser
-.PHONY : au_parser
+svm: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 svm
+.PHONY : svm
 
 # fast build rule for target.
-au_parser/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/au_parser.dir/build.make CMakeFiles/au_parser.dir/build
-.PHONY : au_parser/fast
+svm/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/svm.dir/build.make CMakeFiles/svm.dir/build
+.PHONY : svm/fast
 
 src/svm.o: src/svm.cpp.o
 .PHONY : src/svm.o
 
 # target to build an object file
 src/svm.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/au_parser.dir/build.make CMakeFiles/au_parser.dir/src/svm.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/svm.dir/build.make CMakeFiles/svm.dir/src/svm.cpp.o
 .PHONY : src/svm.cpp.o
 
 src/svm.i: src/svm.cpp.i
@@ -142,7 +142,7 @@ src/svm.i: src/svm.cpp.i
 
 # target to preprocess a source file
 src/svm.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/au_parser.dir/build.make CMakeFiles/au_parser.dir/src/svm.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/svm.dir/build.make CMakeFiles/svm.dir/src/svm.cpp.i
 .PHONY : src/svm.cpp.i
 
 src/svm.s: src/svm.cpp.s
@@ -150,7 +150,7 @@ src/svm.s: src/svm.cpp.s
 
 # target to generate assembly for a file
 src/svm.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/au_parser.dir/build.make CMakeFiles/au_parser.dir/src/svm.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/svm.dir/build.make CMakeFiles/svm.dir/src/svm.cpp.s
 .PHONY : src/svm.cpp.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... au_parser"
+	@echo "... svm"
 	@echo "... src/svm.o"
 	@echo "... src/svm.i"
 	@echo "... src/svm.s"
