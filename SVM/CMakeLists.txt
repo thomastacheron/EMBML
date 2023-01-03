@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++2a")
 file(
 GLOB_RECURSE
 source_files
-src/*.cpp
+src/svm.cpp
 )
 
 add_executable(

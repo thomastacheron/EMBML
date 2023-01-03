@@ -29,7 +29,20 @@ print(f"Test set contains {X_test.shape[0]} examples")
 clf = make_pipeline(StandardScaler(), LinearSVC(random_state=0))
 clf.fit(X_train, y_train)
 
-score = clf.score(X_test, y_test)
-print(score)
+scaler = clf.named_steps['standardscaler']
+scale = scaler.scale_
+mean = scaler.mean_
 
-# TODO : Exportez le modèle et l'utiliser en C++ 
+svc = clf.named_steps['linearsvc']
+coef = svc.coef_
+intercept = svc.intercept_
+
+score = clf.score(X_test, y_test)
+print("score: ",score)
+print("- saving npy parameters -")
+
+# Save the parameters to a file
+np.save('scale.npy', scale)
+np.save('mean.npy', mean)
+np.save('coef.npy', coef)
+np.save('intercept.npy', intercept)
