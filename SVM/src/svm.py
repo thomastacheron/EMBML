@@ -17,6 +17,9 @@ filename = data[1025]
 
 X_train, X_test, y_train, y_test, filename_train, filename_test = train_test_split(X, y, filename, test_size=0.33, random_state=42)
 
+df_concat = pd.concat([X_test, y_test], axis = 1)
+df_concat.to_csv('./storage/test_set.csv', header = False, index=False)
+
 label_unique = np.unique(y)
 train_label_unique = np.unique(y_train)
 test_label_unique = np.unique(y_test)
@@ -54,10 +57,11 @@ print("- saving npy parameters -")
 # np.save('mean.npy', mean)
 # np.save('coef.npy', coef)
 # np.save('intercept.npy', intercept)
-np.savetxt('scale.txt', scale)
-np.savetxt('mean.txt', mean)
-np.savetxt('coef.txt', coef)
-np.savetxt('intercept.txt', intercept)
+
+np.savetxt('storage/scale.txt', scale)
+np.savetxt('storage/mean.txt', mean)
+np.savetxt('storage/coef.txt', coef)
+np.savetxt('storage/intercept.txt', intercept)
 
 # scale_load = np.load('scale.npy')
 # for i in range(scale_load.shape[0]):
