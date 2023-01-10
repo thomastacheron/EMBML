@@ -68,16 +68,16 @@ int main()
 
     std::string label = line.substr(pos + 1, pos);
 
-    if(label == "metal"){labels.push_back(6);}
-    if(label == "country"){labels.push_back(2);}
-    if(label == "hiphop"){labels.push_back(4);}
-    if(label == "pop"){labels.push_back(7);}
-    if(label == "jazz"){labels.push_back(5);}
-    if(label == "disco"){labels.push_back(3);}
     if(label == "blues"){labels.push_back(0);}
-    if(label == "rock"){labels.push_back(9);}
     if(label == "classical"){labels.push_back(1);}
+    if(label == "country"){labels.push_back(2);}
+    if(label == "disco"){labels.push_back(3);}
+    if(label == "hiphop"){labels.push_back(4);}
+    if(label == "jazz"){labels.push_back(5);}
+    if(label == "metal"){labels.push_back(6);}
+    if(label == "pop"){labels.push_back(7);}
     if(label == "reggae"){labels.push_back(8);}
+    if(label == "rock"){labels.push_back(9);}
 
     // Add the last value in the line to the feature vector
     features.push_back(feature);

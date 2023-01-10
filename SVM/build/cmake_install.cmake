@@ -1,4 +1,4 @@
-# Install script for directory: /home/am/Documents/Cours/Semestre_5/Embedded_Machine_Learning/EMBML/SVM
+# Install script for directory: /home/thomastacheron/Documents/ROB/3A/EMBML/SVM
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/am/Documents/Cours/Semestre_5/Embedded_Machine_Learning/EMBML/SVM/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/thomastacheron/Documents/ROB/3A/EMBML/SVM/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
