@@ -1,6 +1,8 @@
 #include <vector>
 #include <stdint.h>
 
+// decision_tree.h est un header adapté à la main du header decision_tree0.h qui est un output de emlearn
+
 int16_t decision_tree_predict_tree_0(const std::vector<double>& features) {
           if (features[332] < -0.4018714427947998) {
               if (features[1023] < -0.5608730316162109) {

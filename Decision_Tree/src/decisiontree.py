@@ -53,3 +53,8 @@ print(score)
 import emlearn
 cmodel = emlearn.convert(clf.steps[1][1], method='inline')
 cmodel.save(file='decision_tree0.h')
+
+cmodel = emlearn.convert(clf2.steps[1][1], method='inline')
+cmodel.save(file='random_forest0.h')
+
+# TODO : Faire un dossier random forest et refaire la même (prendre des moreceaux de ce code)
