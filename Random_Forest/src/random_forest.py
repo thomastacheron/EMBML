@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 import pandas as pd
 import numpy as np
 import os
@@ -29,7 +30,10 @@ print(f"Train set contains {X_train.shape[0]} features")
 print(f"Test set contains {len(test_label_unique)} labels")
 print(f"Test set contains {X_test.shape[0]} examples")
 
-clf = make_pipeline(StandardScaler(), DecisionTreeClassifier())
+
+from sklearn.ensemble import RandomForestClassifier
+
+clf = make_pipeline(StandardScaler(), RandomForestClassifier())
 clf.fit(X_train, y_train)
 
 scaler = clf.named_steps['standardscaler']
@@ -40,8 +44,9 @@ np.savetxt('storage/scale.txt', scale)
 np.savetxt('storage/mean.txt', mean)
 
 score = clf.score(X_test, y_test)
-print(score)
+print(f"score = {score}")
 
 import emlearn
+
 cmodel = emlearn.convert(clf.steps[1][1], method='inline')
-cmodel.save(file='decision_tree0.h')
+cmodel.save(file='random_forest0.h')
