@@ -98,14 +98,14 @@ void feature_extraction(const std::string& file_path){
   auto avg = DataVector(N);
   auto stddev = DataVector(N);
   auto sample = std::vector<Complex>(N, 0);
-  for (int i = 0; i < K; i++){
+  for (float_t i = 0.; i < K; i += 1.){
     int c = 0;
     while (c < N && c + N * i < au.hdr.dataSize / sizeof(I16)){
       sample[c] = au.dataVector[c + N * i];
       c++;
     }
     ite_dit_fft(sample);
-    for (int j = 0; j < N; j++){
+    for (float_t j = 0.; j < N; j += 1.){
       sample[j] = (pow(sample[j].real(), 2) + pow(sample[j].imag(), 2)) / N;
       avg[j] = i / (i + 1) * avg[j] + (sample[j].real() / (i + 1));
       stddev[j] += (pow((i + 2) * sample[j].real() - avg[j] * (i + 1), 2) / (i + 2) / (i + 1));
