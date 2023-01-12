@@ -9,7 +9,7 @@
 typedef uint32_t U32;
 typedef uint16_t U16;
 typedef int16_t I16;
-typedef std::vector<float_t> DataVector;
+typedef std::vector<I16> DataVector;
 
 
 #pragma pack(push, 1)
