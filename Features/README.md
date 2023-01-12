@@ -1,14 +1,17 @@
-**To generate features.csv :**
+**How to generate features.csv ?**
 
-If there is one:
+- First you need to make sure there is not one already.
 
+```bash
 rm features.csv
+```
 
+- Then:
 
-Then:
-
+```bash
 mkdir build && cd build
 cmake .. && make
 ./au_parser
 cd ..
 bash setup.bash
+```
