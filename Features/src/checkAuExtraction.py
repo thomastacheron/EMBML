@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 # import sounddevice
 
-file_au='/home/thomastacheron/Documents/ROB/3A/EMBML/TD1/archive/genres/blues/blues.00000.au'
-file_c='/home/thomastacheron/Documents/ROB/3A/EMBML/TD1/build/output.csv'
+file_au='../archive/genres/blues/blues.00000.au'
+file_c='../output.csv'
 Fe=22050
 
 def readAuFile(file):

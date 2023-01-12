@@ -8,6 +8,7 @@
 #include <complex>
 #include <filesystem>
 #include <sstream>
+#include <math.h>
 #include "constants.h"
 #include "fft_utils.h"
 
