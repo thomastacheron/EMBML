@@ -2,12 +2,16 @@
 
 - First you need to compute the model.
 
+```bash
 cd src
 python3 svm.py
 cd ..
+```
 
 - Then, you can use the predictions on your computer or on the embedded system by using the model and the sources.
 
+```bash
 mkdir build && cd build
 cmake .. && make
 ./svm
+```
