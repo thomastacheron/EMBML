@@ -45,24 +45,13 @@ print("scale: ", scale)
 print("coef: ", coef)
 print("intercept: ", intercept)
 
-
-
 score = clf.score(X_test, y_test)
 print("score: ",score)
 
-
 # Save the parameters to a file
 print("- saving npy parameters -")
-# np.save('scale.npy', scale)
-# np.save('mean.npy', mean)
-# np.save('coef.npy', coef)
-# np.save('intercept.npy', intercept)
 
 np.savetxt('storage/scale.txt', scale)
 np.savetxt('storage/mean.txt', mean)
 np.savetxt('storage/coef.txt', coef)
 np.savetxt('storage/intercept.txt', intercept)
-
-# scale_load = np.load('scale.npy')
-# for i in range(scale_load.shape[0]):
-#     print(scale_load[i])

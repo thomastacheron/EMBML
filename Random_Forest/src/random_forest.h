@@ -1,6 +1,7 @@
 #include <vector>
 #include <stdint.h>
 
+// random_forest.h est un header adapté à la main du header random_forest0.h qui est un output de emlearn
 
 int32_t random_forest0_predict_tree_0(const std::vector<double>& features) {
           if (features[511] < -0.550093024969101) {
