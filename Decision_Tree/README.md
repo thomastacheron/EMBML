@@ -4,7 +4,7 @@
 
 ```bash
 cd src
-python3 random_forest.py # generate raw output decision_tree0.h
+python3 decision_tree.py # generate raw output decision_tree0.h
 cd ..
 ```
 
