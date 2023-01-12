@@ -40,11 +40,6 @@ svc = clf.named_steps['linearsvc']
 coef = svc.coef_
 intercept = svc.intercept_
 
-print("mean: ", mean)
-print("scale: ", scale)
-print("coef: ", coef)
-print("intercept: ", intercept)
-
 score = clf.score(X_test, y_test)
 print("score: ",score)
 

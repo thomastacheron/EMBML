@@ -73,10 +73,9 @@ std::ostream& operator<<(std::ostream& os, const Au& au){
 void load_au(std::ifstream& datafile, Au& au){
   datafile.read(reinterpret_cast<char*>(&au.hdr), sizeof(au.hdr));
   au.hdr.be2he();
-  assert(au.hdr.magicNumber == 0x2e736e64);
   I16 data;
   datafile.seekg(au.hdr.dataOffset);
-  while (!datafile.eof()){
+  while (true){
     datafile.read(reinterpret_cast<char*>(&data), sizeof(data));
     if (datafile.eof()){
       break;
@@ -93,7 +92,6 @@ void feature_extraction(const std::string& file_path){
     throw "Unable to load data file";
   Au au;
   load_au(datafile, au);
-  // std::cout << au.hdr;
 
   auto avg = DataVector(N);
   auto stddev = DataVector(N);
@@ -113,6 +111,7 @@ void feature_extraction(const std::string& file_path){
     sample = std::vector<Complex>(N, 0);
   }
   for (auto& it: stddev){
+    it = it / N;
     it = sqrt(it);
   }
   datafile.close();
