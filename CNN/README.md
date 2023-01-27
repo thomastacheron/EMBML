@@ -14,4 +14,5 @@
 We did not manage to remove the overfitting by lack of time.
 
 ![result](https://user-images.githubusercontent.com/114411509/215166136-eef665d9-6132-44de-8796-08bd149f1241.png)
+
 46% accuracy
