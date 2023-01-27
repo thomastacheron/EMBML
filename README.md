@@ -6,6 +6,10 @@
 
 **How to generate features.csv ?**
 
+```bash
+cd Features
+```
+
 - First you need to make sure there is not one already.
 
 ```bash
@@ -22,6 +26,10 @@ cd ..
 bash setup.bash
 ```
 ### wav_parser : C++ sources to extract data from GTZAN dataset in .wav format.
+
+```bash
+cd wav_parser
+```
 
 **How to use wav_parser ?**
 
@@ -42,4 +50,4 @@ std::cout << wav << "\n";
 
 ### SVM, Random_Forest, Decision_Tree : Trains a model in order to get C++ sources for inferring on an embedded system.
 
- First you need to compute the model by running a python script, then you can use the C++ sources and the model files on an embedded system to make predictions. Refer to specific README.md to get more instructions.
+First you need to compute the model by running a python script, then you can use the C++ sources and the model files on an embedded system to make predictions. Refer to specific README.md to get more instructions.
