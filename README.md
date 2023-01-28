@@ -65,7 +65,7 @@ First you need to compute the model by running a python script, then you can use
 
 ![result2](https://user-images.githubusercontent.com/114411509/215166125-063cd745-e986-43c1-9d3d-7894796bfc71.png)
 
-We did not manage to remove the overfitting by lack of time.
+We did not manage to remove the overfitting. We may need more data.
 
 ![result](https://user-images.githubusercontent.com/114411509/215166136-eef665d9-6132-44de-8796-08bd149f1241.png)
 
